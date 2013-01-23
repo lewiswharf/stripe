@@ -80,7 +80,7 @@ class Extension_Stripe extends Extension {
     public function actionEventPreSaveFilter($context) {
 
         if(!isset($_SESSION['symphony-stripe'])) {
-            require_once(EXTENSIONS . '/stripe/api/lib/Stripe.php');
+            require_once(EXTENSIONS . '/stripe/lib/api/lib/Stripe.php');
             Stripe::setApiKey(Stripe_General::getApiKey());
 
             $filters = $context['event']->eParamFILTERS;

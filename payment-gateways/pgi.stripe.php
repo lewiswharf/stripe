@@ -2,7 +2,7 @@
 
 	require_once(EXTENSIONS . '/pgi_loader/lib/class.paymentgateway.php');
 	require_once(EXTENSIONS . '/stripe/lib/class.stripegeneral.php');
-	require_once(EXTENSIONS . '/stripe/api/lib/Stripe.php');
+	require_once(EXTENSIONS . '/stripe/lib/api/lib/Stripe.php');
 
 	Class StripePaymentGateway extends PaymentGateway {
 

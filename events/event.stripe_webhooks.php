@@ -2,7 +2,7 @@
 
 	require_once(TOOLKIT . '/class.event.php');
     require_once(EXTENSIONS . '/stripe/lib/class.stripegeneral.php');
-    require_once(EXTENSIONS . '/stripe/api/lib/Stripe.php');
+    require_once(EXTENSIONS . '/stripe/lib/api/lib/Stripe.php');
 
 	Class eventstripe_webhooks extends SectionEvent{
 

@@ -27,7 +27,7 @@ Class datasourceplans extends DataSource{
         $result = new XMLElement($this->dsParamROOTELEMENT);
 
         require_once(EXTENSIONS . '/stripe/lib/class.stripegeneral.php');
-        require_once(EXTENSIONS . '/stripe/api/lib/Stripe.php');
+        require_once(EXTENSIONS . '/stripe/lib/api/lib/Stripe.php');
 
         Stripe::setApiKey(Stripe_General::getApiKey());
         $plans = Stripe_Plan::all();

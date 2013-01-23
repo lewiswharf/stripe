@@ -1,7 +1,7 @@
 <?php
 
 require_once(TOOLKIT . '/class.administrationpage.php');
-require_once(EXTENSIONS . '/stripe/api/lib/Stripe.php');
+require_once(EXTENSIONS . '/stripe/lib/api/lib/Stripe.php');
 
 class contentExtensionStripeCoupons extends AdministrationPage {
 
