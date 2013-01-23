@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension id="stripe" xmlns="http://symphony-cms.com/schemas/extension/1.0">
+<extension status="experimental" id="stripe" xmlns="http://symphony-cms.com/schemas/extension/1.0">
 	<name>Stripe</name>
 	<description>Stripe payments extension for Symphony CMS</description>
 	<repo type="github">https://github.com/lewiswharf/stripe</repo>
 	<types>
 		<type>Field</type>
+		<type>Third Party Integration</type>
+		<type>Interface</type>
+		<type>Event</type>
 	</types>
 	<authors>
 		<author>
@@ -14,6 +17,6 @@
 		</author>
 	</authors>
 	<releases>
-		<release version="0.1" date="2013-01-09" min="2.3" />
+		<release version="0.1" date="2013-01-19" min="2.3" />
 	</releases>
 </extension>
