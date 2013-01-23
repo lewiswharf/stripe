@@ -83,7 +83,7 @@
                         if(strstr($filter, 'stripe_'))
                             $name = str_replace('stripe_', '', $filter);
                     }
-                    $result[$name] = $class->ROOTELEMENT;
+                    $result[$name] = $ext->ROOTELEMENT;
                 }
             }
             return $result;
