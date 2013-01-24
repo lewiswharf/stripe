@@ -192,12 +192,18 @@ class Extension_Stripe extends Extension {
             foreach($stripe as $key => $val) {
                 if(empty($val) && isset($_POST['stripe'][$key])) {
                     $stripe[$key] = $_POST['stripe'][$key];
+                    // Todo consider updating stripe if user changes an optional field after tripe creation but prior to symphony event success
                 }
             }
         }
 
         // Add values of response for Symphony event to process
         $context['fields'] = array_merge(Stripe_General::addStripeFieldsToSymphonyEventFields($stripe), $context['fields']);
+
+        // Create the post data cookie element
+        if (is_array($stripe) && !empty($stripe)) {
+            General::array_to_xml($context['post_values'], $stripe, true);
+        }
 
         return $context;
     }
