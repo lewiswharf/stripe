@@ -79,11 +79,21 @@ class Extension_Stripe extends Extension {
 
     public function actionEventPreSaveFilter($context) {
 
+        $filters = $context['event']->eParamFILTERS;
+        $proceed = false;
+
+        foreach ($filters as $key => $val) {
+            if (in_array($val, array_keys(Stripe_General::getAllFilters()))) {
+                $proceed = true;
+            }
+        }
+
+        if(!$proceed) return true;
+
         if(!isset($_SESSION['symphony-stripe'])) {
             require_once(EXTENSIONS . '/stripe/lib/api/lib/Stripe.php');
             Stripe::setApiKey(Stripe_General::getApiKey());
 
-            $filters = $context['event']->eParamFILTERS;
             $fields = $_POST['stripe'];
 
             // Convert handles if Symphony standard

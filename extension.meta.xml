@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension status="experimental" id="stripe" xmlns="http://symphony-cms.com/schemas/extension/1.0">
 	<name>Stripe</name>
-	<description>Stripe payments extension for Symphony CMS. This extension allows direct access to Stripe's API using Symphony CMS concepts; no PHP is necessary.</description>
+	<description>Stripe payments extension for Symphony CMS. This extension allows direct access to Stripe's API using Symphony CMS concepts.</description>
 	<repo type="github">https://github.com/lewiswharf/stripe</repo>
 	<types>
 		<type>Field</type>
@@ -17,6 +17,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="0.3" date="2013-2-07" min="2.3">
+            - Fixed bug introduced when `$_SESSION` was incorporated where `actionEventPreSaveFilter` didn't check for Stripe filter.
+        </release>
 		<release version="0.2" date="2013-01-23" min="2.3">
             - Several bug fixes.
             - Stripe response added to `<post-values/>`
