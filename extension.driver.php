@@ -112,6 +112,7 @@ class Extension_Stripe extends Extension {
                                 break;
                             case 'Stripe_Customer-retrieve-update':
                                 $stripe = Stripe_Customer::retrieve($fields['id']);
+                                unset($fields['id']);
                                 $stripe = Stripe_General::setStripeFieldsToUpdate($stripe, $fields);
                                 $stripe = $stripe->save();
                                 break;
@@ -169,32 +170,32 @@ class Extension_Stripe extends Extension {
                         // Invalid parameters were supplied to Stripe's API
                         $context['messages'][] = array('stripe', false, $e->getMessage());
                         Stripe_General::emailPrimaryDeveloper($e->getMessage());
+                        return $context;
                     } catch (Stripe_AuthenticationError $e) {
                         // Authentication with Stripe's API failed
                         // (maybe you changed API keys recently)
                         $context['messages'][] = array('stripe', false, $e->getMessage());
                         Stripe_General::emailPrimaryDeveloper($e->getMessage());
+                        return $context;
                     } catch (Stripe_ApiConnectionError $e) {
                         // Network communication with Stripe failed
                         $context['messages'][] = array('stripe', false, $e->getMessage());
                         Stripe_General::emailPrimaryDeveloper($e->getMessage());
+                        return $context;
                     } catch (Stripe_Error $e) {
                         // Display a very generic error to the user, and maybe send
                         $context['messages'][] = array('stripe', false, $e->getMessage());
                         Stripe_General::emailPrimaryDeveloper($e->getMessage());
+                        return $context;
                     } catch (Exception $e) {
                         // Something else happened, completely unrelated to Stripe
                         $context['messages'][] = array('stripe', false, $e->getMessage());
                         Stripe_General::emailPrimaryDeveloper($e->getMessage());
+                        return $context;
                     }
                 }
             }
 
-            // Convert stripe object to array so that it can be looped
-            $stripe = $stripe->__toArray();
-
-            // Add stripe response to session in case event fails
-            $_SESSION['symphony-stripe'] = serialize($stripe);
         } else {
             $stripe = unserialize($_SESSION['symphony-stripe']);
 
@@ -207,12 +208,25 @@ class Extension_Stripe extends Extension {
             }
         }
 
-        // Add values of response for Symphony event to process
-        $context['fields'] = array_merge(Stripe_General::addStripeFieldsToSymphonyEventFields($stripe), $context['fields']);
+        if (!empty($stripe)) {
+            // Convert stripe object to array so that it can be looped
+            $stripe = $stripe->__toArray();
 
-        // Create the post data cookie element
-        if (is_array($stripe) && !empty($stripe)) {
+            // Add values of response for Symphony event to process
+            if(!empty($fields)) {
+                $context['fields'] = $fields;
+            }
+            if(is_array($context['fields'])) {
+                $context['fields'] = array_merge(Stripe_General::addStripeFieldsToSymphonyEventFields($stripe), $context['fields']);
+            } else {
+                $context['fields'] = Stripe_General::addStripeFieldsToSymphonyEventFields($stripe);
+            }
+
+            // Create the post data cookie element
             General::array_to_xml($context['post_values'], $stripe, true);
+
+            // Add stripe response to session in case event fails
+            $_SESSION['symphony-stripe'] = serialize($stripe);
         }
 
         return $context;

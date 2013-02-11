@@ -65,7 +65,7 @@ Abstract Class Stripe_General {
             $email->sender_name = (EmailGatewayManager::getDefaultGateway() == 'sendmail' ? Symphony::Configuration()->get('from_name', 'email_sendmail') : Symphony::Configuration()->get('from_name', 'email_smtp'));
             $email->sender_email_address = (EmailGatewayManager::getDefaultGateway() == 'sendmail' ? Symphony::Configuration()->get('from_address', 'email_sendmail') : Symphony::Configuration()->get('from_address', 'email_smtp'));
 
-            $email->recipients = $email->setRecipients($primary['email']);
+            $email->recipients = array($primary['first_name'] . ' ' . $primary['last_name'] => $primary['email']);
             $email->text_plain = $message;
             $email->subject = 'Stripe Error';
 
@@ -83,9 +83,9 @@ Abstract Class Stripe_General {
     public static function addStripeFieldsToSymphonyEventFields($response) {
         foreach ($response as $key => $val) {
             $key = str_replace('_', '-', $key);
-            if (!is_array($val) && !empty($val)) {
+            if (!is_object($val) && !is_array($val) && !empty($val)) {
                 $result[$key] = $val;
-            } elseif (!empty($val)) {
+            } elseif (!is_object($val) && !empty($val)) {
                 foreach($val as $k => $v) {
                     if(!empty($v)) {
                         $key = str_replace('_', '-', $k);
