@@ -17,6 +17,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="0.4" date="2013-7-12" min="2.3">
+            - More bug fixes
+        </release>
 		<release version="0.3" date="2013-2-07" min="2.3">
             - Fixed bug introduced when `$_SESSION` was incorporated where `actionEventPreSaveFilter` didn't check for Stripe filter.
         </release>
