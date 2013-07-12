@@ -78,7 +78,6 @@ class Extension_Stripe extends Extension {
     }
 
     public function actionEventPreSaveFilter($context) {
-
         $filters = $context['event']->eParamFILTERS;
         $proceed = false;
 
@@ -89,6 +88,7 @@ class Extension_Stripe extends Extension {
         }
 
         if(!$proceed) return true;
+//        print_r($_POST); die();
 
         if(!isset($_SESSION['symphony-stripe'])) {
             require_once(EXTENSIONS . '/stripe/lib/api/lib/Stripe.php');
@@ -210,18 +210,22 @@ class Extension_Stripe extends Extension {
 
         if (!empty($stripe)) {
             // Convert stripe object to array so that it can be looped
-            $stripe = $stripe->__toArray();
+            if(is_object($stripe)) {
+                $stripe = $stripe->__toArray();
+
+                foreach($stripe as $key => $val){
+                    if(is_object($val)) {
+                        $stripe[$key] = $val->__toArray();
+                    }
+                }
+            }
 
             // Add values of response for Symphony event to process
-            if(!empty($fields)) {
-                $context['fields'] = $fields;
-            }
             if(is_array($context['fields'])) {
                 $context['fields'] = array_merge(Stripe_General::addStripeFieldsToSymphonyEventFields($stripe), $context['fields']);
             } else {
                 $context['fields'] = Stripe_General::addStripeFieldsToSymphonyEventFields($stripe);
             }
-
             // Create the post data cookie element
             General::array_to_xml($context['post_values'], $stripe, true);
 
@@ -329,22 +333,22 @@ class Extension_Stripe extends Extension {
         return Symphony::Configuration()->write();
     }
 
-    public function fetchNavigation() {
-        return array(
-            array(
-                'location' => 1000,
-                'name' => __('Stripe'),
-                'children' => array(
-                    array(
-                        'name' => __('Plans'),
-                        'link' => '/plans/'
-                    ),
-                    array(
-                        'name' => __('Coupons'),
-                        'link' => '/coupons/'
-                    )
-                )
-            )
-        );
-    }
+//    public function fetchNavigation() {
+//        return array(
+//            array(
+//                'location' => 1000,
+//                'name' => __('Stripe'),
+//                'children' => array(
+//                    array(
+//                        'name' => __('Plans'),
+//                        'link' => '/plans/'
+//                    ),
+//                    array(
+//                        'name' => __('Coupons'),
+//                        'link' => '/coupons/'
+//                    )
+//                )
+//            )
+//        );
+//    }
 }

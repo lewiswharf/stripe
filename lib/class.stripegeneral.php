@@ -81,6 +81,7 @@ Abstract Class Stripe_General {
     }
 
     public static function addStripeFieldsToSymphonyEventFields($response) {
+//print_r($response); die();
         foreach ($response as $key => $val) {
             $key = str_replace('_', '-', $key);
             if (!is_object($val) && !is_array($val) && !empty($val)) {
